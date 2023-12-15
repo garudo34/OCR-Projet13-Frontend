@@ -1,0 +1,233 @@
+swagger: '2.0'
+info:
+  title: Bank Argent API documentation
+  description: Contains all available API endpoints in this codebase
+  version: '1.1.0'
+  termsOfService: 'http://swagger.io/terms/'
+host: localhost:3001
+basePath: /api/v2
+schemes:
+  - http
+paths:
+  /user/transaction:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions Module
+      summary: Fetch all transactions of user for the required month
+      description: ''
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+          type: string
+        - in: query
+          name: month
+          type: string
+          enum:
+            - january
+            - february
+            - march
+            - april
+            - may
+            - june
+            - july
+            - august
+            - september
+            - october
+            - november
+            - december
+        - in: query
+          name: groupByAccount
+          type: boolean
+      responses:
+        '200':
+          description: Successful Operation
+          schema:
+            $ref: '#/definitions/AllTransactionsResponse'
+        '400':
+          description: Invalid Id supplied
+        '404':
+          description: Account not found
+        '500':
+          description: Internal Server Error
+
+  /user/account/{accountId}/transaction:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions Module
+      summary: Fetch all transactions of an user account
+      description: ''
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+          type: string
+        - in: path
+          name: accountId
+          description: ID of the user account to fetch the transactions
+          required: true
+          type: integer
+        - in: query
+          name: month
+          type: string
+          enum:
+            - january
+            - february
+            - march
+            - april
+            - may
+            - june
+            - july
+            - august
+            - september
+            - october
+            - november
+            - december
+      responses:
+        '200':
+          description: Successful Operation
+          schema:
+            $ref: '#/definitions/AllTransactionsResponse'
+        '400':
+          description: Invalid Id supplied
+        '404':
+          description: Account not found
+        '500':
+          description: Internal Server Error
+  /user/account/{accountId}/transaction/{transactionId}:
+    parameters:
+      - in: header
+        name: Authorization
+        description: Attach Bearer JWT token
+        required: true
+        type: string
+      - in: path
+        name: accountId
+        description: ID of the account
+        required: true
+        type: integer
+      - in: path
+        name: transactionId
+        description: Id of the transaction to return
+        required: true
+        type: integer
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions Module
+      summary: Find a transaction by id
+      description: Return a transaction of an user account
+      responses:
+        '200':
+          description: Successful Operation
+          schema:
+            $ref: '#/definitions/TransactionResponse'
+        '400':
+          description: Invalid Id supplied
+        '404':
+          description: Account or Transaction not found
+        '500':
+          description: Internal Server Error
+    patch:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions Module
+      summary: Updates a transaction of an user account
+      description: ''
+      parameters:
+        - in: body
+          name: payload
+          description: Payload of transaction that needs to be updated
+          schema:
+            type: object
+            properties:
+              category:
+                type: string
+              notes:
+                type: string
+      responses:
+        '200':
+          description: Successful Operation
+          schema:
+            $ref: '#/definitions/ApiResponseOk'
+        '400':
+          description: Invalid Id supplied
+        '404':
+          description: Account or Transaction not found
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions Module
+      summary: Deletes a transaction of an user account
+      description: ''
+      parameters:
+        - in: path
+          name: transactionId
+          description: Id of the transaction to delete
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Successful Delete
+        '400':
+          description: Invalid Id supplied
+        '404':
+          description: Account or Transaction not found
+        '500':
+          description: Internal Server Error
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+definitions:
+  ApiResponseOk:
+    type: object
+    properties:
+      id:
+        type: integer
+  AllTransactionsResponse:
+    type: array
+    items:
+      $ref: '#/definitions/TransactionModel'
+  TransactionResponse:
+    type: object
+    items:
+      $ref: '#/definitions/TransactionModel'
+  TransactionModel:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+      date:
+        type: string
+        pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
+        example: '2023-01-01'
+      description:
+        type: string
+        example: Golden Sun Bakery
+      amount:
+        type: number
+        format: double
+        example: 5.00
+      type:
+        type: string
+        example: Electronic
+      category:
+        type: string
+        example: Food
+      notes:
+        type: string
+        example: Lorem ipsum
