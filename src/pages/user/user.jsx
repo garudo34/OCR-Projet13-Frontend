@@ -34,7 +34,7 @@ export const User = () => {
           })
         )
         setToggleForm((toggle) => !toggle)
-        navigate('/')
+        navigate('/profile')
       } catch (err) {
         console.log(err)
       }

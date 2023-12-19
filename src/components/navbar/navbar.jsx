@@ -19,16 +19,14 @@ export const NavBar = () => {
 
   return (
     <nav className='main-nav'>
-      {/* <Link to='/' className='main-nav-loo'> */}
-      <a href='/' className='main-nav-loo'>
+      <Link to='/' className='main-nav-loo'>
         <img
           className='main-nav-logo-image'
           src={logo}
           alt='Argent Bank Logo'
         />
         <h1 className='sr-only'>Argent Bank</h1>
-      </a>
-      {/* </Link> */}
+      </Link>
       {!token ? (
         <div>
           <Link to='/login' className='main-nav-item'>
