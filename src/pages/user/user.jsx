@@ -3,7 +3,7 @@ import { Footer } from '../../components/footer/footer'
 import { NavBar } from '../../components/navbar/navbar'
 import './user.css'
 import { userSlice } from '../../features/user/userSlice'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { updateUserProfile } from '../../services/user'
 import { useNavigate } from 'react-router'
 
@@ -25,7 +25,6 @@ export const User = () => {
     const lastName = e.currentTarget.lastName.value
     if (firstName && lastName) {
       try {
-        console.log(token)
         const response = await updateUserProfile(token, firstName, lastName)
         console.log(response)
         dispatch(
@@ -44,9 +43,11 @@ export const User = () => {
     }
   }
 
-  if (!firstName) {
-    navigate('/login')
-  }
+  useEffect(() => {
+    if (!token) {
+      navigate('/login')
+    }
+  }, [token, navigate])
 
   return (
     <div>
