@@ -7,14 +7,6 @@ export const userSlice = createSlice({
     lastName: null,
   },
   reducers: {
-    getUserProfile: (state, action) => {
-      const { firstName, lastName } = action.payload
-      return {
-        ...state,
-        firstName: firstName,
-        lastName: lastName,
-      }
-    },
     editUserProfile: (state, action) => {
       const { firstName, lastName } = action.payload
       return {
@@ -25,3 +17,5 @@ export const userSlice = createSlice({
     },
   },
 })
+
+export const { editUserProfile } = userSlice.actions

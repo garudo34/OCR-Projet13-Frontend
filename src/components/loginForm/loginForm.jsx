@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { login } from '../../services/auth'
 import { useNavigate } from 'react-router'
-import { authSlice } from '../../features/login/authSlice'
+import { setToken } from '../../features/login/authSlice'
 import { getUserProfile } from '../../services/user'
-import { userSlice } from '../../features/user/userSlice'
+import { editUserProfile } from '../../features/user/userSlice'
 import './loginForm.css'
 
 export const LoginForm = () => {
@@ -22,15 +22,10 @@ export const LoginForm = () => {
     try {
       const response = await login(inputFields.username, inputFields.password)
       const token = response.data.body.token
-      dispatch(authSlice.actions.getToken({ token: token }))
+      dispatch(setToken({ token: token }))
       const response2 = await getUserProfile(token)
       const { firstName, lastName } = response2.data.body
-      dispatch(
-        userSlice.actions.getUserProfile({
-          firstName: firstName,
-          lastName: lastName,
-        })
-      )
+      dispatch(editUserProfile({ firstName: firstName, lastName: lastName }))
       setInputFields({ ...inputFields, username: '', password: '' })
       navigate('/profile')
     } catch (err) {
@@ -78,7 +73,7 @@ export const LoginForm = () => {
 
   const validateEmail = (email) => {
     return email.match(
-      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     )
   }
 

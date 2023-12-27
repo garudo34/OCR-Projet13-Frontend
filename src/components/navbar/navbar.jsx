@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import logo from '../../assets/img/argentBankLogo.png'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { authSlice } from '../../features/login/authSlice'
+import { logout } from '../../features/login/authSlice'
 
 export const NavBar = () => {
   const { token } = useSelector((state) => state.auth)
@@ -13,7 +13,7 @@ export const NavBar = () => {
 
   const handleLogout = (e) => {
     e.preventDefault()
-    dispatch(authSlice.actions.logout())
+    dispatch(logout())
     navigate('/')
   }
 

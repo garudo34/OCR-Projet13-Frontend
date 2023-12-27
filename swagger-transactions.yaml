@@ -51,58 +51,6 @@ paths:
           description: Not Found
         '500':
           description: Internal Server Error
-    post:
-      security:
-        - Bearer: []
-      tags:
-        - Transaction
-      summary: Create a transaction
-      description: ''
-      parameters:
-        - in: header
-          name: Authorization
-          description: Attach Bearer JWT token
-          required: true
-          type: string
-        - in: body
-          name: payload
-          description: Payload of a new transaction
-          schema:
-            type: object
-            required:
-              - accountId, date, description, amount, type
-            properties:
-              accountId:
-                type: integer
-                example: 1
-              date:
-                type: string
-                example: '2021-01-01'
-              description:
-                type: string
-                example: Golden Sun Bakery
-              amount:
-                type: number
-                example: 2300.00
-              type:
-                type: string
-                example: Electronic
-              category:
-                type: string
-                example: Food
-              notes:
-                type: string
-      responses:
-        '200':
-          description: Successful Operation
-          schema:
-            $ref: '#/definitions/ApiResponseOk'
-        '400':
-          description: Bad Request
-        '404':
-          description: Not Found
-        '500':
-          description: Internal Server Error
   /user/transaction/{transactionId}:
     parameters:
       - in: header
@@ -156,28 +104,6 @@ paths:
           description: Successful Operation
           schema:
             $ref: '#/definitions/ApiResponseOk'
-        '400':
-          description: Bad Request
-        '404':
-          description: Not found
-        '500':
-          description: Internal Server Error
-    delete:
-      security:
-        - Bearer: []
-      tags:
-        - Transaction
-      summary: Delete a transaction of an user account
-      description: ''
-      parameters:
-        - in: path
-          name: transactionId
-          description: Id of the transaction to delete
-          required: true
-          type: integer
-      responses:
-        '200':
-          description: Successful Delete
         '400':
           description: Bad Request
         '404':

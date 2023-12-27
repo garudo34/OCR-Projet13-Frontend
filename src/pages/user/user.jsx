@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Footer } from '../../components/footer/footer'
 import { NavBar } from '../../components/navbar/navbar'
 import './user.css'
-import { userSlice } from '../../features/user/userSlice'
+import { editUserProfile } from '../../features/user/userSlice'
 import { useEffect, useState } from 'react'
 import { updateUserProfile } from '../../services/user'
 import { useNavigate } from 'react-router'
@@ -27,12 +27,7 @@ export const User = () => {
       try {
         const response = await updateUserProfile(token, firstName, lastName)
         console.log(response)
-        dispatch(
-          userSlice.actions.editUserProfile({
-            firstName: firstName,
-            lastName: lastName,
-          })
-        )
+        dispatch(editUserProfile({ firstName: firstName, lastName: lastName }))
         setToggleForm((toggle) => !toggle)
         navigate('/profile')
       } catch (err) {
